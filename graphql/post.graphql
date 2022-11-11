@@ -1,0 +1,7 @@
+type Post {
+  title: String!
+  author: User!
+  slug: String @slug
+}
+
+
