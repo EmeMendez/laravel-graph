@@ -15,16 +15,9 @@ final class UpdateUserValidator extends Validator
     public function rules(): array
     {
         return [
-            'id' => [
-                'required'
-            ],
-            'name' => [
-                'required',
-            ],
-            'email' => [
-                'required',
-                Rule::unique('users', 'email')->ignore($this->arg('id'), 'id'),
-            ]
+            'id' => ['required'],
+            'name' => ['required'],
+            'email' => [ 'required', Rule::unique('users', 'email')->ignore($this->arg('id'), 'id') ]
         ];
     }
 }

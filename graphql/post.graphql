@@ -1,7 +1,46 @@
+scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+
 type Post {
-  title: String!
-  author: User!
-  slug: String @slug
+    id: ID!
+    title: String!
+    slug: String
+    user_id: Int!
+    created_at: DateTime!
+    updated_at: DateTime!
+    user: User! @belongsTo
+    is_active: Int!
 }
+
+type Query {
+  posts(
+    title: String @where(operator: "like")
+    slug: String @where(operator: "like")
+    user_id: Int @eq
+    ): [Post!]! @all
+
+  post(
+    id: ID @eq
+    title: String @eq @where(operator: "like")
+    slug: String @where(operator: "like")
+    ): Post @find
+}
+
+type Mutation {
+  createPost(
+    title: String! @rules(apply: ["required","string", "unique:posts", "max:255"])
+    user_id: Int! @rules(apply: ["required","exists:users,id"])
+  ): Post @create
+
+  updatePost(
+    id: ID!
+    title: String!
+    user_id: Int!
+  ): Post @update @validator
+
+}
+
+
+
+
 
 
