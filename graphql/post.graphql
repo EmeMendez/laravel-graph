@@ -15,7 +15,10 @@ type Query {
   posts(
     title: String @where(operator: "like")
     slug: String @where(operator: "like")
+    is_active: Int @eq
     user_id: Int @eq
+    limit: Int @limit
+    orderBy: _ @orderBy(columns: ["id","title","created_at", "updated_at"])
     ): [Post!]! @all
 
   post(
@@ -37,6 +40,9 @@ type Mutation {
     user_id: Int!
   ): Post @update @validator
 
+  deletePost(
+    id: ID! @rules(apply: ["exists:posts"])
+    ): Post
 }
 
 
